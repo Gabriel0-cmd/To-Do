@@ -38,3 +38,47 @@ function addTask(){
 }
 
 taskBtn.addEventListener("click", addTask)
+const clearAllBtn = document.querySelector("#clearAllBtn");
+const clearCompletedBtn = document.querySelector("#clearCompletedBtn");
+const taskCounter = document.querySelector("#taskCounter");
+
+function updateCounter(){
+    const total = document.querySelectorAll("li").length;
+    const done = document.querySelectorAll(".completed").length;
+    taskCounter.textContent = `${done} de ${total} tarefas concluídas`;
+}
+
+taskInput.addEventListener("keypress", e => {
+    if(e.key === "Enter") addTask();
+});
+
+clearAllBtn.onclick = () => {
+    taskList.innerHTML = '';
+    updateCounter();
+};
+
+clearCompletedBtn.onclick = () => {
+    document.querySelectorAll(".completed")
+    .forEach(t => t.parentElement.remove());
+    updateCounter();
+};
+
+function createEditButton(span){
+    const b = document.createElement('button');
+    b.textContent = 'Editar';
+    b.onclick = () => {
+        const t = prompt("Editar:", span.textContent);
+        if(t) span.textContent = t;
+    };
+    return b;
+} 
+taskInput.value = '';
+updateCounter();
+
+const editButton = createEditButton(span);
+li.appendChild(editButton);
+span.addEventListener("click", function(){
+    
+    span.classList.toggle('completed');
+    updateCounter();
+});
